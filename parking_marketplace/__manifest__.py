@@ -8,6 +8,7 @@
     'depends': ['sale_management', 'mail', 'account'],
     'data': [
         'security/ir.model.access.csv',
+        'security/parking_security.xml',
         'data/account_data.xml',
         'data/product_data.xml',
         'data/cron_data.xml',

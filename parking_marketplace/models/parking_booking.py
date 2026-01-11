@@ -46,7 +46,7 @@ class ParkingBooking(models.Model):
             overlapping_bookings = self.env['parking.booking'].search([
                 ('id', '!=', booking.id),
                 ('space_id', '=', booking.space_id.id),
-                ('state', 'not in', ['draft', 'cancelled']),
+                ('state', 'not in', ['draft', 'cancelled'], 'expired']),
                 ('start_date', '<', booking.end_date),
                 ('end_date', '>', booking.start_date),
             ])

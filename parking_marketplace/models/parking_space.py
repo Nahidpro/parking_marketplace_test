@@ -14,3 +14,20 @@ class ParkingSpace(models.Model):
     hourly_rate = fields.Monetary(string='Hourly Rate', currency_field='currency_id', required=True)
 
     active = fields.Boolean(default=True)
+
+    total_revenue = fields.Monetary(string="Total Revenue", compute='_compute_total_revenue')
+
+    _sql_constraints = [
+        ('check_hourly_rate_positive', 'CHECK(hourly_rate >= 0)', 'The hourly rate cannot be negative.'),
+    ]
+
+    def action_view_revenue(self):
+        pass
+
+    def _compute_total_revenue(self):
+        for space in self:
+            completed_bookings = self.env['parking.booking'].search([
+                ('space_id', '=', space.id),
+                ('state', '=', 'completed')
+            ])
+            space.total_revenue = sum(completed_bookings.mapped('total_price'))
