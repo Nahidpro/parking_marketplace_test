@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Parking Space Views -->
+    <record id="view_parking_space_tree" model="ir.ui.view">
+        <field name="name">parking.space.tree</field>
+        <field name="model">parking.space</field>
+        <field name="arch" type="xml">
+            <tree string="Parking Spaces">
+                <field name="name"/>
+                <field name="owner_id"/>
+                <field name="hourly_rate"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_parking_space_form" model="ir.ui.view">
+        <field name="name">parking.space.form</field>
+        <field name="model">parking.space</field>
+        <field name="arch" type="xml">
+            <form string="Parking Space">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="owner_id"/>
+                        <field name="address"/>
+                        <field name="hourly_rate"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Parking Booking Views -->
+    <record id="view_parking_booking_tree" model="ir.ui.view">
+        <field name="name">parking.booking.tree</field>
+        <field name="model">parking.booking</field>
+        <field name="arch" type="xml">
+            <tree string="Bookings">
+                <field name="space_id"/>
+                <field name="driver_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_parking_booking_form" model="ir.ui.view">
+        <field name="name">parking.booking.form</field>
+        <field name="model">parking.booking</field>
+        <field name="arch" type="xml">
+            <form string="Booking">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="space_id"/>
+                            <field name="driver_id"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_parking_space" model="ir.actions.act_window">
+        <field name="name">Parking Spaces</field>
+        <field name="res_model">parking.space</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_parking_booking" model="ir.actions.act_window">
+        <field name="name">Bookings</field>
+        <field name="res_model">parking.booking</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_parking_root" name="Parking Management" parent="sale.sale_menu_root" sequence="10"/>
+    <menuitem id="menu_parking_space" name="Parking Spaces" parent="menu_parking_root" action="action_parking_space"/>
+    <menuitem id="menu_parking_booking" name="Bookings" parent="menu_parking_root" action="action_parking_booking"/>
+</odoo>
