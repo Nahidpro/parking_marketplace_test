@@ -5,9 +5,12 @@
     'category': 'Sales',
     'author': 'Jules',
     'website': 'https://www.odoo.com',
-    'depends': ['sale_management', 'mail'],
+    'depends': ['sale_management', 'mail', 'account'],
     'data': [
         'security/ir.model.access.csv',
+        'data/account_data.xml',
+        'data/product_data.xml',
+        'data/cron_data.xml',
         'views/parking_views.xml',
     ],
     'installable': True,
