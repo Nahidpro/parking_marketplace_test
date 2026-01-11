@@ -16,6 +16,7 @@ class ParkingBooking(models.Model):
         ('in_use', 'In Use'),
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
+        ('expired', 'Expired'),
     ], string='Status', default='draft', required=True, tracking=True)
 
     sale_order_id = fields.Many2one('sale.order', string='Sales Order', readonly=True, copy=False)
@@ -46,7 +47,7 @@ class ParkingBooking(models.Model):
             overlapping_bookings = self.env['parking.booking'].search([
                 ('id', '!=', booking.id),
                 ('space_id', '=', booking.space_id.id),
-                ('state', 'not in', ['draft', 'cancelled'], 'expired']),
+                (('state', 'not in', ['draft', 'cancelled', 'expired'])]),
                 ('start_date', '<', booking.end_date),
                 ('end_date', '>', booking.start_date),
             ])

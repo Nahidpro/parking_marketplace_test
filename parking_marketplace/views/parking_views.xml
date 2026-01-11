@@ -21,16 +21,19 @@
             <form string="Parking Space">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="action_view_bookings" type="object" class="oe_stat_button" icon="fa-calendar">
+                            <field name="booking_count" widget="statinfo" string="Bookings"/>
+                        </button>
                         <button name="action_view_revenue" type="object" class="oe_stat_button" icon="fa-money">
                             <field name="total_revenue" widget="monetary" string="Total Revenue"/>
                         </button>
                     </div>
                     <group>
-                        <field name="name"/>
-                        <field name="owner_id"/>
-                        <field name="address"/>
-                        <field name="hourly_rate"/>
-                        <field name="active"/>
+                        <field name="name" help="The public name of the parking space."/>
+                        <field name="owner_id" help="The partner who owns this space and will receive payouts."/>
+                        <field name="address" placeholder="123 Parking Way, City, State" help="The physical address of the parking space."/>
+                        <field name="hourly_rate" help="The base price per hour. Platform fees will be added on top."/>
+                        <field name="active" help="Uncheck this box to temporarily delist the space."/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -67,18 +70,23 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1>Booking for <field name="space_id" readonly="1"/></h1>
+                        <h1>Booking for <field name="space_id" readonly="1" help="The parking space being booked."/></h1>
                     </div>
                      <group>
                         <group>
-                            <field name="driver_id"/>
+                            <field name="driver_id" help="The partner who is booking the space."/>
                         </group>
                         <group>
-                            <field name="start_date"/>
-                            <field name="end_date"/>
+                            <field name="start_date" help="Must not overlap with existing confirmed bookings."/>
+                            <field name="end_date" help="Must not overlap with existing confirmed bookings."/>
                         </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
