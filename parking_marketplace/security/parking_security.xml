@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Rule for Drivers to only see their own bookings -->
+        <record id="booking_driver_rule" model="ir.rule">
+            <field name="name">Driver: Can only see own bookings</field>
+            <field name="model_id" ref="model_parking_booking"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="domain_force">[('driver_id','=',user.partner_id.id)]</field>
+        </record>
+
+        <!-- Rule for Owners to see bookings for their spaces -->
+        <record id="booking_owner_rule" model="ir.rule">
+            <field name="name">Owner: Can see bookings for their spaces</field>
+            <field name="model_id" ref="model_parking_booking"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('space_id.owner_id','=',user.partner_id.id)]</field>
+        </record>
+
+        <record id="booking_owner_write_rule" model="ir.rule">
+            <field name="name">Owner: Can edit own bookings only if not confirmed</field>
+            <field name="model_id" ref="model_parking_booking"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('space_id.owner_id', '=', user.partner_id.id), ('state', 'not in', ['confirmed', 'in_use', 'completed'])]</field>
+        </record>
+
+        <!-- Rule for users to only see active parking spaces -->
+        <record id="space_active_rule" model="ir.rule">
+            <field name="name">User: Can only see active spaces</field>
+            <field name="model_id" ref="model_parking_space"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="domain_force">[('active','=',True)]</field>
+        </record>
+    </data>
+</odoo>

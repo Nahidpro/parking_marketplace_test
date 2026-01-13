@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Parking Space Views -->
+    <record id="view_parking_space_tree" model="ir.ui.view">
+        <field name="name">parking.space.tree</field>
+        <field name="model">parking.space</field>
+        <field name="arch" type="xml">
+            <tree string="Parking Spaces">
+                <field name="name"/>
+                <field name="owner_id"/>
+                <field name="hourly_rate"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_parking_space_form" model="ir.ui.view">
+        <field name="name">parking.space.form</field>
+        <field name="model">parking.space</field>
+        <field name="arch" type="xml">
+            <form string="Parking Space">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_bookings" type="object" class="oe_stat_button" icon="fa-calendar">
+                            <field name="booking_count" widget="statinfo" string="Bookings"/>
+                        </button>
+                        <button name="action_view_revenue" type="object" class="oe_stat_button" icon="fa-money">
+                            <field name="total_revenue" widget="monetary" string="Total Revenue"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name" help="The public name of the parking space."/>
+                        <field name="owner_id" help="The partner who owns this space and will receive payouts."/>
+                        <field name="address" placeholder="123 Parking Way, City, State" help="The physical address of the parking space."/>
+                        <field name="hourly_rate" help="The base price per hour. Platform fees will be added on top."/>
+                        <field name="active" help="Uncheck this box to temporarily delist the space."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Parking Booking Views -->
+    <record id="view_parking_booking_tree" model="ir.ui.view">
+        <field name="name">parking.booking.tree</field>
+        <field name="model">parking.booking</field>
+        <field name="arch" type="xml">
+            <tree string="Bookings">
+                <field name="space_id"/>
+                <field name="driver_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_parking_booking_form" model="ir.ui.view">
+        <field name="name">parking.booking.form</field>
+        <field name="model">parking.booking</field>
+        <field name="arch" type="xml">
+            <form string="Booking">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_use,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Booking for <field name="space_id" readonly="1" help="The parking space being booked."/></h1>
+                    </div>
+                     <group>
+                        <group>
+                            <field name="driver_id" help="The partner who is booking the space."/>
+                        </group>
+                        <group>
+                            <field name="start_date" help="Must not overlap with existing confirmed bookings."/>
+                            <field name="end_date" help="Must not overlap with existing confirmed bookings."/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_parking_space" model="ir.actions.act_window">
+        <field name="name">Parking Spaces</field>
+        <field name="res_model">parking.space</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_parking_booking" model="ir.actions.act_window">
+        <field name="name">Bookings</field>
+        <field name="res_model">parking.booking</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_parking_root" name="Parking Management" parent="sale.sale_menu_root" sequence="10"/>
+    <menuitem id="menu_parking_space" name="Parking Spaces" parent="menu_parking_root" action="action_parking_space"/>
+    <menuitem id="menu_parking_booking" name="Bookings" parent="menu_parking_root" action="action_parking_booking"/>
+</odoo>
